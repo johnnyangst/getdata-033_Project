@@ -5,7 +5,8 @@
 ## using "../UCI HAR Dataset/test"
 ## using "../UCI HAR Dataset/train"
 
-library(dplyr)
+##library(dplyr)
+library(reshape2)
 ######################### LOAD TABLES ###########################
 ## test
 xTest <- read.table("../UCI HAR Dataset/test/X_test.txt")
@@ -40,5 +41,8 @@ names(subjectMerged) <- "Subject"
 
 ## Combine everything
 globalData <- cbind(xMerged, yMerged, subjectMerged)
-
+dataCol <- ncol(globalData) - 2
+globalData.melted <- melt(globalData, id = c("Subject","Activity"))
+globalData.mean <- dcast(globalData.melted, Subject + Activity ~ variable, mean)
+write.table(globalData.mean,"tidyData.txt", row.names = FALSE, quote = FALSE)
 
