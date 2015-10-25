@@ -41,8 +41,10 @@ names(subjectMerged) <- "Subject"
 
 ## Combine everything
 globalData <- cbind(xMerged, yMerged, subjectMerged)
-dataCol <- ncol(globalData) - 2
+#dataCol <- ncol(globalData) - 2
+## Melt and cast
 globalData.melted <- melt(globalData, id = c("Subject","Activity"))
 globalData.mean <- dcast(globalData.melted, Subject + Activity ~ variable, mean)
+## write tidy data to txt file
 write.table(globalData.mean,"tidyData.txt", row.names = FALSE, quote = FALSE)
 
